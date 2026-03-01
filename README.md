@@ -185,7 +185,7 @@ No frameworks. No backend. Fully client-side.
 1. Clone the repository:
 
    ```
-   git clone <your-repo-link>
+   git clone https://github.com/mejatinrajani/Lexicon.git
    ```
 2. Open `index.html` in your browser.
 3. Start typing and analyzing.
@@ -206,3 +206,29 @@ No dependencies required.
 Lexicon is designed to make writing measurable, insightful, and smarter.
 
 ---
+
+Author Details
+
+Name: Jatin Rajani
+
+Project: Lexicon
+
+LinkedIn: https://www.linkedin.com/in/mejatinrajani
+
+GitHub: https://github.com/mejatinrajani
+
+I, Jatin, hereby declare that all the source code, logic, design, and implementation of this project (Scientific Calculator) have been independently developed and written by me.
+
+I confirm that:
+
+This work is my original creation.
+
+I am the sole author and legal owner of this project and its codebase.
+
+No part of this project has been copied or used from any unauthorized source.
+
+Any external libraries or tools used are properly credited and comply with their respective licenses.
+
+I reserve all rights as the creator and owner of this software, subject to the terms of the license provided with this project.
+
+Author: Jatin Rajani
