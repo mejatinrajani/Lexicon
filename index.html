@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lexicon - Advanced Word Counter</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="logo-title">Lexi<span>con</span></div>
+      <div class="logo-sub">Advanced Text Analysis</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="loadSample()">Load Sample</button>
+      <button class="btn" onclick="copyStats()">Copy Stats</button>
+      <button class="btn btn-accent" onclick="clearAll()">Clear</button>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <div class="editor-pane">
+      <div class="editor-header">
+        <span class="editor-label">Text Input</span>
+        <div class="editor-toolbar">
+          <button class="tool-btn" id="btn-none" onclick="setHighlight('none')" title="No highlight">Plain</button>
+          <button class="tool-btn" id="btn-words" onclick="setHighlight('words')" title="Highlight words">Words</button>
+          <button class="tool-btn" id="btn-sentences" onclick="setHighlight('sentences')" title="Highlight sentences">Sentences</button>
+          <button class="tool-btn" id="btn-punct" onclick="setHighlight('punct')" title="Highlight punctuation">Punct</button>
+        </div>
+      </div>
+
+      <div class="textarea-wrap" id="textarea-wrap">
+        <textarea id="editor" placeholder="Start typing or paste your text here to begin analysis…" spellcheck="true"></textarea>
+        <div class="highlighted-display" id="highlighted-display"></div>
+        <div class="hl-legend" id="hl-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(124,110,245,0.5)"></div>Words</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(201,169,110,0.4)"></div>Sentences</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(224,111,111,0.5)"></div>Punctuation</div>
+        </div>
+      </div>
+
+      <div class="editor-footer">
+        <div class="reading-time">
+          <div>Read: <span id="read-time">0 sec</span></div>
+          <div>Speak: <span id="speak-time">0 sec</span></div>
+          <div>Flesch: <span id="flesch-score">—</span></div>
+        </div>
+        <div id="sentiment-badge" class="sentiment-badge neutral">○ Neutral</div>
+      </div>
+
+      <div class="goal-section">
+        <div class="goal-header">
+          <span class="goal-label">Writing Goal</span>
+          <div class="goal-input-wrap">
+            <input class="goal-input" type="number" id="goal-val" placeholder="500" min="1">
+            <select class="goal-type" id="goal-type">
+              <option value="words">Words</option>
+              <option value="chars">Chars</option>
+              <option value="sentences">Sentences</option>
+            </select>
+          </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="goal-status" id="goal-status">Set a goal to track progress</div>
+      </div>
+
+      <div class="search-section">
+        <span class="search-label">Find</span>
+        <input class="search-input" type="text" id="search-input" placeholder="Search word or phrase…">
+        <div class="toggle-wrap">
+          <div class="toggle" id="case-toggle" onclick="toggleCase()" title="Case sensitive"></div>
+          <span class="toggle-label">Aa</span>
+        </div>
+        <span class="search-count" id="search-count"></span>
+      </div>
+    </div>
+
+    <div class="stats-pane">
+      <div class="stats-section">
+        <div class="stats-section-header">
+          <span class="stats-section-title">Core Metrics</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="s-words">0</div>
+            <div class="stat-label">Words</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-chars">0</div>
+            <div class="stat-label">Characters</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-chars-no-space">0</div>
+            <div class="stat-label">Chars (no space)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-sentences">0</div>
+            <div class="stat-label">Sentences</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-paragraphs">0</div>
+            <div class="stat-label">Paragraphs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-lines">0</div>
+            <div class="stat-label">Lines</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-punct">0</div>
+            <div class="stat-label">Punctuation</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="s-symbols">0</div>
+            <div class="stat-label">Symbols</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="adv-stats">
+        <div class="adv-stats-header">
+          <span class="adv-stats-title">Advanced Analysis</span>
+        </div>
+        <div class="adv-stats-body">
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:var(--accent2)"></div>Unique Words</div>
+            <span class="adv-row-value" id="a-unique-words">0</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:var(--accent3)"></div>Unique Chars</div>
+            <span class="adv-row-value" id="a-unique-chars">0</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:var(--accent)"></div>Avg Word Length</div>
+            <span class="adv-row-value" id="a-avg-word">0</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:var(--accent5)"></div>Avg Sentence Length</div>
+            <span class="adv-row-value" id="a-avg-sent">0 words</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:var(--accent4)"></div>Longest Word</div>
+            <span class="adv-row-value" id="a-longest-word" style="font-size:0.72rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:#a78bfa"></div>Vocabulary Density</div>
+            <span class="adv-row-value" id="a-vocab-density">0%</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:#67e8f9"></div>Digits</div>
+            <span class="adv-row-value" id="a-digits">0</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:#f9a8d4"></div>Uppercase Words</div>
+            <span class="adv-row-value" id="a-uppercase">0</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:#86efac"></div>Syllables (est.)</div>
+            <span class="adv-row-value" id="a-syllables">0</span>
+          </div>
+          <div class="adv-row">
+            <div class="adv-row-label"><div class="adv-dot" style="background:#fdba74"></div>Emojis</div>
+            <span class="adv-row-value" id="a-emojis">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-section">
+        <div class="stats-section-header">
+          <span class="stats-section-title">Char Type Breakdown</span>
+        </div>
+        <div class="density-chart">
+          <div class="density-bars" id="density-bars"></div>
+          <div class="density-label">Letters · Spaces · Digits · Punct · Symbols · Emojis</div>
+        </div>
+      </div>
+
+      <div class="top-words-section">
+        <div class="top-words-header">
+          <span class="top-words-title">Top Words</span>
+          <div class="toggle-wrap">
+            <div class="toggle" id="stopword-toggle" onclick="toggleStopwords()" title="Exclude stop words"></div>
+            <span class="toggle-label">No stop words</span>
+          </div>
+        </div>
+        <div class="top-words-list" id="top-words-list">
+          <div class="empty-state">Begin typing to see frequency…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
