@@ -207,7 +207,7 @@ Lexicon is designed to make writing measurable, insightful, and smarter.
 
 ---
 
-Author Details
+## Author Details
 
 Name: Jatin Rajani
 
